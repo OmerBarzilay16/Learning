@@ -9,15 +9,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Read file
-        run: cat text.txt
-
       - name: Welcome Message
         run: echo "Welcome to my first GitHub Actions workflow!"
 
       - name: List Files
-        run: ls -la
-
+        run: ls 
+      - name: Read file
+        run: cat text.txt
       - name: Display Current Date
         run: date
         
