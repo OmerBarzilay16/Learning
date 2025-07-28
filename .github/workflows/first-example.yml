@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Read file
-        run: cat README.md
+        run: cat .github\workflows\README.md
 
       - name: Welcome Message
         run: echo "Welcome to my first GitHub Actions workflow!"
