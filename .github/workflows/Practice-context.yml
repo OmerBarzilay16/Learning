@@ -1,4 +1,4 @@
-name: context-testing
+name: Practice-context
 
 on: workflow_dispatch
 

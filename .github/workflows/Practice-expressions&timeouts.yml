@@ -1,4 +1,4 @@
-name: expressions&timeouts-practice
+name: Practice expressions&timeouts
 
 on: workflow_dispatch
 

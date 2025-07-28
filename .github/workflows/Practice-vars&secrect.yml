@@ -1,4 +1,4 @@
-name: vars&secrect-practice
+name: Practice - vars&secrect
 
 on: workflow_dispatch
 env:

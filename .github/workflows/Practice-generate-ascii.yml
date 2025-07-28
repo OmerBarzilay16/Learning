@@ -1,4 +1,4 @@
-name: Generate ASCII Art
+name: Practice - Generate ASCII Art
 
 on: workflow_dispatch
 #on: push
