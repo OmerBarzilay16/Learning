@@ -1,20 +1,42 @@
 name: vars&secrect-practice
 
 on: workflow_dispatch
-
+env:
+  MY_Var1: "Hello Interviewer"
+  MY_SECRET: ${{ secrets.MY_SECRET }} # Ensure you have this secret set in your repository settings
 jobs:
   vars_and_secret_job:
     env:
-      MY_Var: "Hello Interviewer"
+      MY_Var2: "Hello Interviewer"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Display Environment Variable
-        run: echo "The value of MY_VAR is ${{ env.MY_Var }}"
+        run: |
+          echo "The value of MY_VAR2 is ${{ env.MY_Var2 }}"
+          echo "The value of MY_VAR1 is ${{ env.MY_Var1 }}"
 
       - name: Use Secret Variable
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
+        run: echo "The secret value is $MY_SECRET"
+
+
+  test_on_diffrent_levels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Display Environment Variable at Job Level
+        run: |
+            echo "The value of MY_VAR2 is ${{ env.MY_Var2 }}"
+            echo "The value of MY_VAR1 is ${{ env.MY_Var1 }}"
+
+
+      - name: Use Secret Variable at Job Level
         env:
           MY_SECRET: ${{ secrets.MY_SECRET }}
         run: echo "The secret value is $MY_SECRET"
