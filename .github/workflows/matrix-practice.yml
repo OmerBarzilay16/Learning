@@ -1,0 +1,19 @@
+name: matrix-practice
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-20.04, windows-latest]
+        image: [hello-world, alpine]
+    runs-on: ${{ matrix.os }}
+    steps:
+        - name: print docker info
+          run: |
+            docker info
+            docker version
+        
+        - name: run docker image
+          run: docker run --rm ${{ matrix.image }}
