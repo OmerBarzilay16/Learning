@@ -1,4 +1,5 @@
 All The concepts to practice:
+
 Core components - workflows, job, steps
 Types of runners
 What are actions
@@ -12,3 +13,5 @@ Job concurrency
 Timeouts 
 Matrix strategy
 Context
+Expressions
+Event filters

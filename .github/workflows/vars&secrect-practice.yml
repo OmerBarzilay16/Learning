@@ -1,0 +1,20 @@
+name: vars&secrect-practice
+
+on: workflow_dispatch
+
+jobs:
+  vars_and_secret_job:
+    env:
+      MY_Var: "Hello Interviewer"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Display Environment Variable
+        run: echo "The value of MY_VAR is $MY_VAR"
+
+      - name: Use Secret Variable
+        env:
+          MY_SECRET: ${{ secrets.MY_SECRET }}
+        run: echo "The secret value is $MY_SECRET"
