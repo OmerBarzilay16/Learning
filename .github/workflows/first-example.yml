@@ -8,7 +8,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        
+
+      - name: Read file
+        run: cat README.rm
+
       - name: Welcome Message
         run: echo "Welcome to my first GitHub Actions workflow!"
 
