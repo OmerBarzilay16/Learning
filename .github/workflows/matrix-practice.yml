@@ -12,8 +12,8 @@ jobs:
           - os: windows-latest
             image: busybox
         include:
-          - os: macos-latest
-            image: hello-world
+          - os: ubuntu-latest
+            image: alpine
     runs-on: ${{ matrix.os }}
     steps:
         - name: print docker info
