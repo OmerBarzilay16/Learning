@@ -16,3 +16,6 @@ jobs:
 
       - name: Test file existence
         run: grep -i "dragon" dragon.txt || echo "Dragon not found in file"
+
+      - name: Display ASCII Art
+        run: cat dragon.txt
