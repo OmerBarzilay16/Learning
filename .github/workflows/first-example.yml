@@ -12,10 +12,15 @@ jobs:
       - name: Welcome Message
         run: echo "Welcome to my first GitHub Actions workflow!"
 
+      - name: Generate ASCII Art
+        run: cowsay -f dragon "I am a dragon!" >> dragon.txt
+
       - name: List Files
         run: ls 
+
       - name: Read file
         run: cat .github/workflows/text.txt
+
       - name: Display Current Date
         run: date
         
