@@ -8,6 +8,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-20.04, windows-latest]
         image: [hello-world, busybox]
+        exclude:
+          - os: windows-latest
+            image: busybox
     runs-on: ${{ matrix.os }}
     steps:
         - name: print docker info
