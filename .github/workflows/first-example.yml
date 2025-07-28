@@ -15,7 +15,7 @@ jobs:
       - name: List Files
         run: ls 
       - name: Read file
-        run: cat text.txt
+        run: cat .github/workflows/text.txt
       - name: Display Current Date
         run: date
         
