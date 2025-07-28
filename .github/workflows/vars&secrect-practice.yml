@@ -3,7 +3,6 @@ name: vars&secrect-practice
 on: workflow_dispatch
 env:
   MY_Var1: "Hello Interviewer"
-  MY_SECRET: ${{ secrets.MY_SECRET }} # Ensure you have this secret set in your repository settings
 jobs:
   vars_and_secret_job:
     env:
