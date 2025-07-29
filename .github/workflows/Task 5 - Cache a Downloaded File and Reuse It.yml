@@ -19,7 +19,15 @@ jobs:
   use-cached-dependency:
     runs-on: ubuntu-latest
     needs: download-dependency
-    steps: 
+    steps:
+      - name: check if the file exists before using it
+        run: |
+            if [ -f dependencies/data.txt ]; then
+              cat dependencies/data.txt
+              else
+              echo "No dependency file found!"
+            fi
+
       - name: Check if the file is cached
         uses: actions/cache@v4
         with:
