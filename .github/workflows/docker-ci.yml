@@ -22,7 +22,7 @@ jobs:
         run: |
           IMAGE_NAME=omerbarzolay16/flask-pg-app
           TAG=${{ github.run_number }}
-          docker tag cool-app_web $IMAGE_NAME:$TAG
+          docker tag learning_web $IMAGE_NAME:$TAG  # <-- ✅ corrected
 
       - name: Push Docker image
         run: |
