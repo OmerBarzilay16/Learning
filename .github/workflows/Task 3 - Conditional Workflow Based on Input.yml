@@ -1,0 +1,31 @@
+name: Task 3 - Conditional Workflow Based on Input
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'production' }}
+    steps:
+      - name: Print environment
+        run: echo "Deploying to ${{ inputs.environment }} environment"
+
+      - name: Echo the selected environment
+        run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
+
+      - name: Echo a masked secret
+        env:
+          SECRET: ${{ secrets.MY_SECRET }}
+        run: echo "The secret value is $SECRET"
+
+  
