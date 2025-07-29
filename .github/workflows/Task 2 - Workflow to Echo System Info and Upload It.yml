@@ -13,11 +13,11 @@ jobs:
     steps:
       - name: collecting data and write to file
         run: |
-          echo "date: $(date)" >> info.txt
-          echo "OS: $(uname -s)" >> info.txt
-          echo "run number: ${{ github.run_number }} >> info.txt
-          echo "ref name: ${{ github.ref_name}}" >> info.txt
-
+            echo "date: $(date)" >> info.txt
+            echo "OS: $(uname -s)" >> info.txt
+            echo "run number: ${{ github.run_number }}" >> info.txt
+            echo "ref name: ${{ github.ref_name }}" >> info.txt
+            
       - name: Upload system info
         uses: actions/upload-artifact@v4
         with:
