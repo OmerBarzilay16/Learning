@@ -1,0 +1,36 @@
+name: Task 2 - Workflow to Echo System Info and Upload It
+
+on: workflow_dispatch
+
+concurrency:
+  group: system-info-group
+  cancel-in-progress: true
+
+jobs:
+  collect-info:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: collecting data and write to file
+        run: |
+          date > info.txt
+          echo "OS: $(uname -s)" >> info.txt
+          echo "run number: ${{ github.run_number }} >> info.txt
+          echo "ref name: ${{ github.ref_name}}" >> info.txt
+
+      - name: Upload system info
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-info
+          
+  summary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: collect-info
+    steps:
+      - name: Print if successful
+        run: echo "Info collection completed for run ${{ needs.collect-info.outputs.run_number }}""
+     
+    
+
+          

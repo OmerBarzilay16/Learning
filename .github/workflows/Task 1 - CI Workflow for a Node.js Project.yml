@@ -1,4 +1,4 @@
-name: Practice - CI Workflow for a Node.js Project
+name: Task 1 - CI Workflow for a Node.js Project
 
 on: 
    push:
