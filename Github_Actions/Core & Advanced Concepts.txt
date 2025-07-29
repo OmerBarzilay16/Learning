@@ -5,7 +5,7 @@ Types of runners
 What are actions
 Multiple jobs workflows
 Need for jobs
-Storing workflow data as artifacts - with upload/dowload -artifact action
+Storing workflow data as artifacts - with upload/dowload - artifact action
 Working with vars in diffrent levels
 Working with secrets
 Trigger workflows with diffrent ways
