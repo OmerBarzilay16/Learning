@@ -1,30 +1,107 @@
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #74ebd5, #acb6e5);
-  color: #333;
+  font-family: 'Inter', sans-serif;
   margin: 0;
-  padding: 2rem;
-}
-
-.container {
-  max-width: 700px;
-  margin: auto;
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-ul {
-  list-style: none;
   padding: 0;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  overflow-x: hidden;
 }
 
-ul li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #ddd;
+/* Navbar */
+nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+
+nav a {
+  color: #ffffffcc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 4rem;
+  padding-inline: 1.5rem;
+}
+
+.hero-inner {
+  max-width: 800px;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.hero-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn,
+.btn-outline {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn {
+  background: white;
+  color: #2575fc;
+}
+
+.btn:hover {
+  background: #f1f1f1;
+}
+
+.btn-outline {
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: #2575fc;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

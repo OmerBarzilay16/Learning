@@ -1,11 +1,10 @@
-FROM python:3.11-slim
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
 
-WORKDIR /app
-
-COPY app/requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY app/ .
-
-CMD ["python", "main.py"]
+INSERT INTO users (name, email, password) VALUES
+('Alice', 'alice@example.com', 'hashed'),
+('Bob', 'bob@example.com', 'hashed');
