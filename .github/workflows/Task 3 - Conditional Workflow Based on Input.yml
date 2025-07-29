@@ -18,10 +18,10 @@ jobs:
     steps:
       - name: Print environment
         run: echo "Deploying to ${{ inputs.environment }} environment"
-        
-        if: ${{ github.event.inputs.environment == 'production' }}
+
       - name: Echo the selected environment
         run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
+        if: ${{ github.event.inputs.environment == 'production' }}
 
       - name: Echo a masked secret
         env:
