@@ -1,0 +1,34 @@
+name: Task 5 - Cache a Downloaded File and Reuse It
+
+on: workflow_dispatch
+
+jobs:
+  download-dependency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a file
+        run: |
+          mkdir -p dependencies && echo "Fake data: $(date)" > dependencies/data.txt
+        
+      - name: Cache the downloaded file
+        uses: actions/cache@v4
+        with:
+            path: dependencies/data.txt
+            key: ${{ runner.os }}-data-${{ hashFiles('dependencies/data.txt') }}
+
+  use-cached-dependency:
+    runs-on: ubuntu-latest
+    needs: download-dependency
+    steps: 
+      - name: Check if the file is cached
+        run: |
+          if [ -f dependencies/data.txt ]; then
+            echo "Using cached data:"
+            cat dependencies/data.txt
+          else
+            echo "No cached data found."
+          fi
+
+      - name: Display current date
+        run: date
+      
