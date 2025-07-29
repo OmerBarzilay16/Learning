@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template, jsonify
 import psycopg2
 import os
 
@@ -14,9 +14,9 @@ def get_db_connection():
 
 @app.route('/')
 def home():
-    return "🎉 Welcome to the Cool App!"
+    return render_template('index.html')
 
-@app.route('/users')
+@app.route('/api/users')
 def users():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -24,7 +24,7 @@ def users():
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    return jsonify(rows)
+    return jsonify([{"id": r[0], "name": r[1]} for r in rows])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
