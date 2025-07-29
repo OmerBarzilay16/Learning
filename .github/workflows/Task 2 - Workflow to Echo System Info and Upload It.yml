@@ -30,7 +30,7 @@ jobs:
     needs: collect-info
     steps:
       - name: Print if successful
-        run: echo "Info collection completed for run ${{ needs.collect-info.outputs.run_number }}""
+        run: echo "Info collection completed for run ${{ github.run_number }}""
      
     
 
