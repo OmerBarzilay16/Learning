@@ -21,6 +21,12 @@ jobs:
     needs: download-dependency
     steps: 
       - name: Check if the file is cached
+        uses: actions/cache@v4
+        with:
+          path: dependencies/data.txt
+          key: ${{ runner.os }}-data-${{ hashFiles('dependencies/data.txt') }}
+
+      - name: Use the cached file
         run: |
           if [ -f dependencies/data.txt ]; then
             echo "Using cached data:"
@@ -28,7 +34,3 @@ jobs:
           else
             echo "No cached data found."
           fi
-
-      - name: Display current date
-        run: date
-      
