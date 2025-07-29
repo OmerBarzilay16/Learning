@@ -6,16 +6,16 @@ jobs:
   get-day:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Current Day of the Week
-        id: get_day
+      - name: Get Current Day of the Week and Set Environment Variable
         run: |
-          echo "day=$(date +%A)" >> $GITHUB_ENV
-          echo "Current day is: $GITHUB_ENV"
+          DAY=$(date +%A)
+          echo "day=$DAY" >> $GITHUB_OUTPUT
+     
 
-  weekday-action:
+  weekday-action:   
     runs-on: ubuntu-latest
     needs: get-day
-    if: ${{ env.day != 'Saturday' && env.day != 'Sunday' }}
+    if: ${{ needs.get-day.outputs.weekday != 'Saturday' && needs.get-day.outputs.weekday != 'Sunday' }}
     steps:
       - name: Run on Weekdays
         run: echo "It's a weekday! Running the action."
