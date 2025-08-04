@@ -1,0 +1,23 @@
+Pod - the smallest component in k8 , logical host that run onr or more containers
+
+Service - component that defines a stable network endpoint to access one or more Pods
+types:
+ClusterIP (default)	Exposes the Service internally within the cluster only.
+NodePort	Exposes the Service on a static port on each Node’s IP.
+LoadBalancer	Provisions an external load balancer (e.g., on cloud providers).
+ExternalName	Maps the Service to an external DNS name (no selector).
+
+ConfigMap - a resource used to store configuration data as key-value pairs
+
+Secret - like ConfigMap but for sensetive data (Base64)
+
+Ingress - an API object that manages external access to services in a cluster — typically HTTP and HTTPS traffic.
+
+Volumes -  a storage unit that is accessible to containers in a Pod. Volumes are used to store data that persists 
+across container restarts or is shared between containers in the same Pod.
+
+Deployment - high-level API object that manages a set of identical Pods, provides self-healing, 
+and supports rolling updates and rollbacks.
+
+StatefulSet - Kubernetes controller used to manage stateful, ordered, and uniquely identified Pods.
+Unlike a Deployment (which creates interchangeable Pods)

@@ -1,0 +1,27 @@
+Worker Node - a machine (virtual or physical) that runs the application workloads — specifically, the Pods.
+Each worker node runs these key components:
+
+Component	Description
+kubelet	    Communicates with the Control Plane; ensures Pods are running as expected on the node.
+kube-proxy	Handles network routing and forwarding traffic to the correct Pods.
+Container   runtime	Runs the actual containers (e.g., Docker, containerd, CRI-O).
+
+Each worker node is responsible for:
+1. Running the Pod
+2. Reporting health/status to the control plane
+3. Forwarding network traffic via kube-proxy
+4. Managing local storage and secrets
+
+
+
+
+Master Node -  It manages and orchestrates the entire system — it does not run application workloads,
+but controls how and where they run.
+
+Components of a Control Plane Node:
+Component	              Description
+kube-apiserver	          The front door of the cluster. All requests go through the API server.
+etcd	                  A distributed key-value store that holds the cluster's entire state.
+scheduler	              Decides which node runs a new Pod based on available resources, affinity, etc.
+controller-manager	      Runs background controllers that handle tasks like replication, node monitoring, etc.
+cloud-controller-manager  Integrates with your cloud provider (e.g., creating load balancers, disks).
