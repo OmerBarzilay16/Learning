@@ -1,0 +1,19 @@
+# MongoDB values
+mongodb:
+  image: mongo
+  username: mongouser
+  password: password123
+  port: 27017
+
+# Mongo Express values
+mongoExpress:
+  image: mongo-express
+  port: 8081
+  authUser: admin
+  authPass: admin123
+
+# Service types
+service:
+  type: NodePort   # or ClusterIP + Ingress
+  mongoPort: 27017
+  expressPort: 8081

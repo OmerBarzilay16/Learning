@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-quota
+spec:
+  hard:
+    pods: "10"                        # max number of Pods
+    requests.cpu: "2"                # max total CPU requested
+    requests.memory: 1Gi             # max total memory requested
+    limits.cpu: "4"                  # max total CPU limit
+    limits.memory: 2Gi               # max total memory limit
