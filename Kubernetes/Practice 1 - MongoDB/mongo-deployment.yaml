@@ -28,3 +28,10 @@ spec:
                 secretKeyRef:
                   name: mongo-secret
                   key: mongo-root-password
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db    # Mongo’s default data path
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
