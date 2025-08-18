@@ -14,6 +14,6 @@ configMapKeyRef
 5. A team applies a default deny all ingress NetworkPolicy in their namespace, but their Pods are fronted by a Service.
 Will traffic to the Service still reach the Pods? Why or why not?
 
-Services don’t bypass NetworkPolicy. If deny-all ingress applies, traffic from Service → Pod is blocked unless you explicitly allow it.
+Services don’t bypass NetworkPolicy. If deny-all ingress applies, traffic from Service → Pod is blocked unless you explicitly allow it
 
 6. 
