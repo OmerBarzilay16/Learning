@@ -1,0 +1,14 @@
+Kubernetes:
+1. You need to make sure a Pod runs on the same node every time it restarts. Which Kubernetes feature would you use?
+Use nodeName or nodeAffinity in the Pod spec to pin it to a specific node so it restarts on the same node.
+
+2. What’s the difference between kubectl exec -it and kubectl attach?
+Unlike kubectl exec, it does not start a new process inside the container — it hooks into the existing one.
+
+3. How do you apply a YAML file but preview the changes before they actually happen?
+k diff
+
+4. You want to ensure a Pod only runs if a specific ConfigMap key exists. Which Kubernetes feature would you use? 
+configMapKeyRef 
+
+5. 
