@@ -16,4 +16,3 @@ Will traffic to the Service still reach the Pods? Why or why not?
 
 Services don’t bypass NetworkPolicy. If deny-all ingress applies, traffic from Service → Pod is blocked unless you explicitly allow it
 
-
