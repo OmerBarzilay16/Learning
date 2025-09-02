@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Register</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    
+    <label>{{ form.name.label }}</label>
+    {{ form.name() }}<br>
+
+    <label>{{ form.email.label }}</label>
+    {{ form.email() }}<br>
+
+    <label>{{ form.password.label }}</label>
+    {{ form.password() }}<br>
+
+    <button type="submit">Register</button>
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+  </form>
+{% endblock %}
