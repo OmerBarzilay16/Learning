@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: cool-app-config
   namespace: cool-app
-data: 
+data:
   DB_NAME: coolapp
   DB_HOST: postgres
-  B_PORT: "5432"
+  DB_PORT: "5432"
   FLASK_ENV: production

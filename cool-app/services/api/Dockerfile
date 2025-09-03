@@ -9,7 +9,7 @@ RUN pip wheel --wheel-dir=/wheels -r requirements.txt
 # ---- Runtime stage ----
 FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
-PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1
 WORKDIR /app
 COPY --from=builder /wheels /wheels
 RUN pip install --no-cache-dir /wheels/*
