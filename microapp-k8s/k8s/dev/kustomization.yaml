@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: microapp
+resources:
+  - ../base
+images:
+  - name: omerbarzolay16/microapp-api
+    newName: omerbarzolay16/microapp-api
+    newTag: "0.1"
+  - name: omerbarzolay16/microapp-web
+    newName: omerbarzolay16/microapp-web
+    newTag: "0.1"
+patches:
+  - target:
+      kind: Ingress
+      name: microapp
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: microapp.local
