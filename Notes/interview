@@ -1,0 +1,20 @@
+1. talk about yourself
+2. talk about direct - Consulting company that specializing in microsoft
+3. about my job - in 80% of the time I was doing projects like landing zones upgrades in those landing zone I was gettig a scope of work 
+   like 12 steps and I would build a specification document that talks about how we will do the project and includes all the technologies we are going to use.
+   in the project I used Teraform to build my infranstracture, I used CAF module that is desiged for azure. it has a lot from networking to firewalls rules from the simple to even more complicated object like DBs AKS clusters all kind of object like storage account , secrets key vault, ayatem accounts that were needed for the systems after the initial set I also deploy the apps on the infrastracture, writing and using helm charts of the companies, ingress controler deploy creating ingresses and servises of the k8 for the app deployment.
+   some of the companies had their own git some didnt in a some project we dive into the github and in our github we had all kinds of our terraform files versions simple pipline templates that we used and in the git we used github action to automate all the deploy and release. in the github action I build the CI/CD that had test and scans and linitesting and other steps like pushing tagging. in some of the project we build an self host runner in the costumer env for everything will remain in the private env.
+
+   in the other 20% I was on a team called middleware that was givving support to our costumers all kunds of requests and errors that couldent be solve in the teir 1 & 2 teams.
+   so it was diving to all kinds of worlds some were more complicated some wasnt like deploy vdi some were security problems, it can be vmware problems or upgrades
+
+
+Most of my time, about 80%, was on Azure landing zone projects. Usually, I’d get a scope of work with steps, and my first task was to write a spec document — basically a plan that explained how we’d do it and what technologies we’d use.
+
+From there, I built the infrastructure with Terraform, using the CAF module, which covers everything from networking and firewall rules up to more advanced resources like databases, AKS clusters, storage accounts, and key vaults.
+
+After the infra was ready, I also handled the application deployment on Kubernetes. I worked with Helm charts, ingress controllers, and services to get apps up and running.
+
+On the CI/CD side, some companies already had Git, some didn’t. When we worked in GitHub, we managed all the Terraform code there and I built GitHub Actions pipelines. The pipelines had testing, security scans, linting, and steps for tagging and pushing images. For customers who needed it, I set up self-hosted runners so everything stayed in their private environment.
+
+So basically my day-to-day was a mix of planning, building infra with Terraform, deploying on Kubernetes with Helm, and automating everything with GitHub Actions. It gave me a lot of hands-on practice with both the infra side and the DevOps automation side.”

@@ -14,3 +14,12 @@ Security:
 
 5. Encrypt communication - encrypt cluster communication
 
+6. Secure Secret Data - using 3rd party to store the secert data, can use K10
+
+7. Secure etcd - Put etcd behind FW & encypt the data, can use K10
+
+8. Protect app data - Automate backup and restore, can use K10
+
+9. Configure security policies - use 3rd party app that implement security policies
+
+10. Disater recovery - Automate disaster recovry like K10

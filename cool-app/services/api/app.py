@@ -8,7 +8,7 @@ app = Flask(__name__)
 def healthz():
  return {"status": "ok"}, 200
 
-app = Flask(__name__)
+# app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'supersecret')
 app.register_blueprint(auth_bp)
 
