@@ -1,0 +1,12 @@
+# Common Helm ignore rules
+.git/
+.github/
+*.swp
+*.tmp
+*.bak
+.DS_Store
+__pycache__/
+*/__pycache__/
+*.pyc
+.idea/
+.vscode/

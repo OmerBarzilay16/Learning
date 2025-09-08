@@ -1,0 +1,16 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Install:
+  helm install microapp ./microapp-helm -n microapp --create-namespace
+
+Ensure an ingress controller is installed (e.g., ingress-nginx).
+
+Add a hosts entry (Windows):
+  127.0.0.1  {{ .Values.ingress.host }}
+
+Status:
+  kubectl -n {{ .Release.Namespace }} get all
+  kubectl -n {{ .Release.Namespace }} get ingress microapp
+
+Test:
+  curl -H "Host: {{ .Values.ingress.host }}" http://127.0.0.1/api/health
