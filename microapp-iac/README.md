@@ -47,3 +47,4 @@ terraform apply -auto-approve
 ## Destroy
 ```powershell
 terraform destroy -auto-approve
+...
