@@ -1,0 +1,13 @@
+namespace             = "microapp"
+install_ingress_nginx = true
+ingress_class         = "nginx"
+ingress_host          = "microapp.local"
+
+api_image_repo        = "omerbarzolay16/microapp-api"
+api_image_tag         = "0.1"
+web_image_repo        = "omerbarzolay16/microapp-web"
+web_image_tag         = "0.1"
+
+db_password           = "micropass"
+db_pvc_size           = "1Gi"
+db_storage_class      = null
