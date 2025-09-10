@@ -9,8 +9,8 @@ env:
   REGISTRY: docker.io
   DOCKERHUB_ORG: omerbarzolay16
   CHART_DIR: microapp-iac/helm/microapp
-  API_DIR: microapp-k8s/services/api/Dockerfile
-  WEB_DIR: microapp-k8s/services/web/Dockerfile
+  API_DIR: microapp-k8s/services/api
+  WEB_DIR: microapp-k8s/services/web
 jobs:
   scan:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
