@@ -1,29 +1,30 @@
 name: CI - Verify
-
 on:
   workflow_dispatch:
-  push:
-    branches: ["**"]
-  pull_request:
-    branches: ["**"]
+  push: { branches: ["**"] }
+  pull_request: { branches: ["**"] }
 
 env:
-  REGISTRY: docker.io
-  DOCKERHUB_ORG: omerbarzolay16
   CHART_DIR: microapp-iac/helm/microapp
-  API_DIR: services/api
-  WEB_DIR: services/web
+  API_DIR: microapp-k8s/services/api
+  WEB_DIR: microapp-k8s/services/web
 
 jobs:
   verify:
-    name: Verify code & chart
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set IMAGE_TAG (short SHA)
         run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+
+      - name: Preflight – required paths exist
+        run: |
+          set -e
+          test -d "$API_DIR" || { echo "::error::Missing $API_DIR"; exit 1; }
+          test -d "$WEB_DIR"  || { echo "::error::Missing $WEB_DIR"; exit 1; }
+          test -f "$API_DIR/Dockerfile" || { echo "::error::Missing $API_DIR/Dockerfile"; exit 1; }
+          test -f "$WEB_DIR/Dockerfile"  || { echo "::error::Missing $WEB_DIR/Dockerfile"; exit 1; }
 
       - name: Python lint (ruff) for API
         uses: chartboost/ruff-action@v1
