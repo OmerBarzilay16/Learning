@@ -1,0 +1,61 @@
+name: CI - Push
+
+on:
+  workflow_run:
+    workflows: ["CI - Scan"]
+    types: [completed]
+
+env:
+  REGISTRY: docker.io
+  DOCKERHUB_ORG: omerbarzolay16
+  CHART_DIR: microapp-iac/helm/microapp
+  API_DIR: services/api
+  WEB_DIR: services/web
+
+jobs:
+  push:
+    # Only proceed if the Scan succeeded AND the original event wasn't a PR
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}
+    name: Push images to Docker Hub
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [api, web]
+    steps:
+      - name: Checkout at triggering commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Set IMAGE_TAG from head_sha
+        run: echo "IMAGE_TAG=${{ github.event.workflow_run.head_sha }}" | cut -c1-7 >> $GITHUB_ENV
+
+      - name: Docker login (Docker Hub)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & push ${{ matrix.service }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.service == 'api' && env.API_DIR || env.WEB_DIR }}
+          file: ${{ matrix.service == 'api' && format('{0}/Dockerfile', env.API_DIR) || format('{0}/Dockerfile', env.WEB_DIR) }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+            ${{ github.event.workflow_run.head_branch == 'main' && format('{0}/{1}/microapp-{2}:latest', env.REGISTRY, env.DOCKERHUB_ORG, matrix.service) || '' }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

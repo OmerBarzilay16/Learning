@@ -1,0 +1,63 @@
+name: CI - Scan
+
+on:
+  workflow_run:
+    workflows: ["CI - Build"]
+    types: [completed]
+
+env:
+  REGISTRY: docker.io
+  DOCKERHUB_ORG: omerbarzolay16
+  CHART_DIR: microapp-iac/helm/microapp
+  API_DIR: services/api
+  WEB_DIR: services/web
+
+jobs:
+  scan:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Scan images (fail on High/Critical)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [api, web]
+    steps:
+      - name: Checkout at triggering commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Set IMAGE_TAG from head_sha
+        run: echo "IMAGE_TAG=${{ github.event.workflow_run.head_sha }}" | cut -c1-7 >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build (load locally for scan) ${{ matrix.service }}
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.service == 'api' && env.API_DIR || env.WEB_DIR }}
+          file: ${{ matrix.service == 'api' && format('{0}/Dockerfile', env.API_DIR) || format('{0}/Dockerfile', env.WEB_DIR) }}
+          push: false
+          load: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+
+      - name: Trivy scan ${{ matrix.service }}
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          format: table
+          exit-code: "1"
+          severity: "HIGH,CRITICAL"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          scanners: "vuln,secret,config"
+        env:
+          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db:2
+          TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1
