@@ -1,4 +1,5 @@
-flask==3.0.3
-gunicorn==21.2.0
-SQLAlchemy==2.0.30
+Flask==3.0.3
+SQLAlchemy==2.0.31
 psycopg2-binary==2.9.9
+gunicorn==23.0.0          # fix CVE-2024-1135, CVE-2024-6827
+setuptools==78.1.1        # fix CVE-2024-6345, CVE-2025-47273
