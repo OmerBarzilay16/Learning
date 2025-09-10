@@ -5,59 +5,57 @@ on:
     workflows: ["CI - Build"]
     types: [completed]
 
-env:
-  REGISTRY: docker.io
-  DOCKERHUB_ORG: omerbarzolay16
-  CHART_DIR: microapp-iac/helm/microapp
-  API_DIR: microapp-k8s/services/api
-  WEB_DIR: microapp-k8s/services/web
 jobs:
   scan:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Scan images (fail on High/Critical)
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
-        service: [api, web]
+        include:
+          - service: api
+            context: microapp-k8s/services/api
+            dockerfile: microapp-k8s/services/api/Dockerfile
+          - service: web
+            context: microapp-k8s/services/web
+            dockerfile: microapp-k8s/services/web/Dockerfile
+
     steps:
-      - name: Checkout at triggering commit
-        uses: actions/checkout@v4
+      # 1) Checkout the same triggering commit again
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
 
+      # 2) Same short SHA tag
       - name: Set IMAGE_TAG from head_sha
         run: echo "IMAGE_TAG=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
 
+      # 3) Build & LOAD locally so Trivy can scan the built image layers
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build (load locally for scan) ${{ matrix.service }}
+      - name: Build (load for scan) ${{ matrix.service }}
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.service == 'api' && env.API_DIR || env.WEB_DIR }}
-          file: ${{ matrix.service == 'api' && format('{0}/Dockerfile', env.API_DIR) || format('{0}/Dockerfile', env.WEB_DIR) }}
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
           push: false
-          load: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          load: true       # <— Trivy scans the locally loaded image
+          tags: docker.io/omerbarzolay16/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
           cache-from: type=gha
 
+      # 4) Trivy scan — fail on HIGH/CRITICAL only
       - name: Trivy scan ${{ matrix.service }}
         uses: aquasecurity/trivy-action@0.24.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          image-ref: docker.io/omerbarzolay16/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
           format: table
-          exit-code: "1"
-          severity: "HIGH,CRITICAL"
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          scanners: "vuln,secret,config"
+          exit-code: "1"                    # non-zero exit when findings present
+          severity: "HIGH,CRITICAL"         # your policy
+          ignore-unfixed: true              # don’t block on issues with no fixes
+          vuln-type: "os,library"           # scan both OS + app deps
+          scanners: "vuln,secret,misconfig" # updated flag (no deprecation warn)
         env:
           TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db:2
           TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1

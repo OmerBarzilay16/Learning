@@ -1,49 +1,52 @@
 name: CI - Build
 
 on:
+  # Fire when Verify completes (and only continue on success)
   workflow_run:
     workflows: ["CI - Verify"]
     types: [completed]
 
-env:
-  REGISTRY: docker.io
-  DOCKERHUB_ORG: omerbarzolay16
-  CHART_DIR: microapp-iac/helm/microapp
-  API_DIR: microapp-k8s/services/api
-  WEB_DIR: microapp-k8s/services/web
-
 jobs:
   build:
+    # Only run if Verify succeeded
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Build images (no push)
     runs-on: ubuntu-latest
+
+    # Build both services with a clear matrix describing context + Dockerfile
     strategy:
       fail-fast: false
       matrix:
-        service: [api, web]
+        include:
+          - service: api
+            context: microapp-k8s/services/api
+            dockerfile: microapp-k8s/services/api/Dockerfile
+          - service: web
+            context: microapp-k8s/services/web
+            dockerfile: microapp-k8s/services/web/Dockerfile
+
     steps:
-      - name: Checkout at triggering commit
-        uses: actions/checkout@v4
+      # 1) Checkout the exact commit that triggered Verify
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
 
+      # 2) Recreate the same immutable tag from that commit
       - name: Set IMAGE_TAG from head_sha
         run: echo "IMAGE_TAG=$(echo '${{ github.event.workflow_run.head_sha }}' | cut -c1-7)" >> "$GITHUB_ENV"
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # 3) Enable multi-arch build plumbing (safe even if not used)
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build ${{ matrix.service }} (test build only)
+      # 4) Build but do not push; use the matrix paths
+      - name: Build ${{ matrix.service }} (no push)
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.service == 'api' && env.API_DIR || env.WEB_DIR }}
-          file: ${{ matrix.service == 'api' && format('{0}/Dockerfile', env.API_DIR) || format('{0}/Dockerfile', env.WEB_DIR) }}
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
           push: false
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.DOCKERHUB_ORG }}/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          # Immutable tag tied to commit
+          tags: docker.io/omerbarzolay16/microapp-${{ matrix.service }}:${{ env.IMAGE_TAG }}
+          # GitHub cache to speed repeat builds
           cache-from: type=gha
           cache-to: type=gha,mode=max
