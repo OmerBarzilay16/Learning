@@ -14,4 +14,4 @@ Did uou user RBAC?
 
 what security best practice you implement?
 
-Did you use helm?
+Did you use helm
